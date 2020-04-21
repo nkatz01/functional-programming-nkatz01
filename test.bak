@@ -1,4 +1,6 @@
-#lang scheme
+ 
+#lang racket
+ 
 
 ;; An interactive calculator inspired by the calculator example in the bison manual.
 
@@ -86,4 +88,4 @@
                   (one-line))))))
     (one-line)))
 
-(calc (open-input-string "x=1\n(x + 2 * 3) - (1+2)*3"))
+(calc  (open-input-file "cmmExamples/input.txt"))
