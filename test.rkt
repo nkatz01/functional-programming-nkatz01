@@ -11,8 +11,8 @@
          (prefix-in : parser-tools/lex-sre))
 
 (define-tokens value-tokens (NUM VAR  ))
-(define-empty-tokens op-tokens (newline = OP CP + - * / %  or && == != >= <= > <  EOF ))
-
+(define-empty-tokens op-tokens (newline  = OP CP + - * / || %   or && == != >= <= > <  EOF ))
+(define || (lambda (a b) (or a b)))
 (define vars (make-hash))
 
 (define-lex-abbrevs
@@ -26,12 +26,13 @@
    [(eof) 'EOF]
    ;; recursively call the lexer on the remaining input after a tab or space.  Returning the
    ;; result of that operation.  This effectively skips all whitespace.
-   [(:or #\tab #\space) (calcl input-port)]
+   [(:or #\tab #\space #\newline ) (calcl input-port)]
    ;; (token-newline) returns 'newline
-  ;  [(:or #\return #\newline) (calcl input-port)]
+     [#\newline (token-newline)]
    ;; Since (token-=) returns '=, just return the symbol directly
-   [(:or "=" "+" "-" "*" "/" "%" "&&" "|"  "==" "!=" ">=" "<=" ">" "<") (string->symbol lexeme)]
-    [(:or "=" "+" "-" "*" "/" "%" "&&" "|"  "==" "!=" ">=" "<=" ">" "<") ( lexeme)]
+       [ (:= 2  #\|)   (token-||)]
+   [(:or "=" "+" "-" "*" "/" "%" "&&"      "==" "!=" ">=" "<=" ">" "<") (string->symbol lexeme)]
+  
    ["(" 'OP]
    [")" 'CP]
     
@@ -45,14 +46,15 @@
   (parser
 
    (start  start)
-   (end     EOF)
+   (end   newline    EOF)
    (tokens value-tokens op-tokens)
    (error (lambda (a b c) (void)))
 
    (precs (right =)
 
 
-          (left && \|)
+          (left  ||)
+          (left &&)
           (left == !=)
           (left <= >= < >)
           (left - +)
@@ -72,7 +74,7 @@
          [(VAR) (hash-ref vars $1 (lambda () 0))]
          [(VAR = exp) (begin (hash-set! vars $1 $3)
                              $3)]
-         [(exp  \| exp) (or  $1 $3 )]
+         [(exp || exp) (or  $1 $3 )]
          [(exp && exp) (and $1 $3)]
          [(exp == exp) (equal? $1 $3)]
          [(exp != exp) (not(equal? $1 $3))]
@@ -96,10 +98,11 @@
   (port-count-lines! ip)
   (letrec ((one-line
 	    (lambda ()
-	      (let ((result (calcp (lambda () (calcl ip)))))
-		(when result
-                  (printf "~a\n" result)
-                  (one-line))))))
-    (one-line)))
+              (let ((result (calcp (lambda () (calcl ip))  )))
+                (when result (printf "~a\n" result)  (one-line))
+                )
+                 ) ))
+    (one-line))
+  )
 
-(calc   (open-input-file "cmmExamples/input.txt"))
+(calc   (open-input-string "0 || (0 || 1)"))
