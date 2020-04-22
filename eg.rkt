@@ -83,7 +83,7 @@
 	      (let ((result (calcp (lambda () (calcl ip)))))
 		(when result
                   (printf "~a\n" result)
-                  (one-line))))))
+                  (one-line))) ) ))
     (one-line)))
 
 (calc (open-input-string "x=1\n(x + 2 * 3) - (1+2)*3"))
