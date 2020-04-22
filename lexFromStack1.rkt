@@ -1,6 +1,7 @@
 #lang racket
-(require brag/support)
- (require "nested-word-list.rkt")
+(require parser-tools/yacc
+         parser-tools/lex
+         (prefix-in : parser-tools/lex-sre))
 ;https://stackoverflow.com/questions/32928656/racket-define-one-character-with-token-char
  (define-tokens value-tokens (NUM VAR  ))
 (define-empty-tokens op-tokens ( newline  = OC CC DEL PRINT WHILE IF S1 S2  OP CP + - * / || %   or && == != >= <= > <  EOF ))
@@ -14,11 +15,11 @@
  (digit (:/ "0" "9")))
  
 (define calcl
-  (lexer-src-pos
+  (lexer 
    [(eof) 'EOF]
    ;; recursively call the lexer on the remaining input after a tab or space.  Returning the
    ;; result of that operation.  This effectively skips all whitespace.
-   [(:or #\tab #\space  #\return )  (return-without-pos(calcl input-port)) ]
+   [(:or #\tab #\space  #\return )   (calcl input-port)  ]
    ;; (token-newline) returns 'newline
     
       [    #\newline (token-newline)]
@@ -40,13 +41,9 @@
 
 (define (port->tokens in)
   (define token (calcl in))
-  (if (eq? (position-token-token token) 'EOF)
+  (if (eq? token  'EOF)
       '()
       (cons token (port->tokens in))))
 
-  (map position-token-token (string->tokens  "123*45/3"))
-; (string->tokens "123*45/3")
-  (define a-parsed-value
-   (parse "123*45/3" ))
- a-parsed-value
- 
+ ; (map position-token-token (string->tokens  "cmmExamples/example5.cmm")) 
+  (string->tokens "cmmExamples/example5.cmm")

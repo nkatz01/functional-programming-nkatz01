@@ -1,0 +1,1 @@
+("7.6" racket ("b0060e039ac9b824a0f18bdd1f2580824617ecb5" . "943cf95ec290792866a47f44cb28583120e606c3") (collects #"brag" #"codegen" #"expander.rkt") (collects #"brag" #"main.rkt") (collects #"errortrace" #"errortrace-key.rkt") (collects #"racket" #"runtime-config.rkt") (collects #"wxme" #"read.rkt"))

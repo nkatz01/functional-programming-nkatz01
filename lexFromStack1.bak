@@ -1,6 +1,7 @@
 #lang racket
-(require brag/support)
- (require "nested-word-list.rkt")
+(require parser-tools/yacc
+         parser-tools/lex
+         (prefix-in : parser-tools/lex-sre))
 ;https://stackoverflow.com/questions/32928656/racket-define-one-character-with-token-char
  (define-tokens value-tokens (NUM VAR  ))
 (define-empty-tokens op-tokens ( newline  = OC CC DEL PRINT WHILE IF S1 S2  OP CP + - * / || %   or && == != >= <= > <  EOF ))
@@ -36,7 +37,7 @@
    [(:: (:+ digit) #\. (:* digit)) (token-NUM (string->number lexeme))]))
 
 (define (string->tokens s)
-  (port->tokens (open-input-string s)))
+  (port->tokens (open-input-file s)))
 
 (define (port->tokens in)
   (define token (calcl in))
@@ -44,9 +45,5 @@
       '()
       (cons token (port->tokens in))))
 
-  (map position-token-token (string->tokens  "123*45/3"))
+ (car (map position-token-token (string->tokens  "cmmExamples/example5.cmm")))
 ; (string->tokens "123*45/3")
-  (define a-parsed-value
-   (parse "123*45/3" ))
- a-parsed-value
- 
