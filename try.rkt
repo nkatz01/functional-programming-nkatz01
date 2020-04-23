@@ -14,4 +14,7 @@
                  (token 'RIGHT-PAREN "]")
                  (token 'RIGHT-PAREN ")"))))
 
- 
+ ((lambda (x y)
+     ; expression using x and y, such as
+     (+ (* x x) (* y y)))
+   (+ 1 2) (+ 3 4))
