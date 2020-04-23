@@ -3,7 +3,7 @@
          parser-tools/lex
          (prefix-in : parser-tools/lex-sre))
 ;https://stackoverflow.com/questions/32928656/racket-define-one-character-with-token-char
- (define-tokens value-tokens (NUM VAR  ))
+ (define-tokens value-tokens (NUM ID  ))
 (define-empty-tokens op-tokens ( newline  = OC CC DEL PRINT WHILE IF S1 S2  OP CP + - * / || %   or && == != >= <= > <  EOF ))
 (define || (lambda (a b) (or a b)))
 (define vars (make-hash))
@@ -31,13 +31,13 @@
    [")" 'CP]
    ["{" 'OC]
    ["}" 'CC] 
-   [(:+ (:or lower-letter upper-letter)) (token-VAR (string->symbol lexeme))]
+   [(:+ (:or lower-letter upper-letter)) (token-ID (string->symbol lexeme))]
    ["," 'DEL]
    [(:+ digit) (token-NUM (string->number lexeme))]
    [(:: (:+ digit) #\. (:* digit)) (token-NUM (string->number lexeme))]))
 
 (define (string->tokens s)
-  (port->tokens (open-input-string s)))
+  (port->tokens (open-input-file s)))
 
 (define (port->tokens in)
   (define token (calcl in))
