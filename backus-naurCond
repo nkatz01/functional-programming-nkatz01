@@ -30,14 +30,14 @@ ArithmeticExpression     : AdditiveExpression
                          ;
 
 AdditiveExpression       : MultiplicativeExpression
-                         | MultiplicativeExpression '+' AdditiveExpression
-                         | MultiplicativeExpression '-' AdditiveExpression
+                         |  AdditiveExpression '+' MultiplicativeExpression 
+                         |  AdditiveExpression '-' MultiplicativeExpression 
                          ;
 
 MultiplicativeExpression : AtomicExpression
-                         | AtomicExpression '*' MultiplicativeExpression
-                         | AtomicExpression '/' MultiplicativeExpression
-                         | AtomicExpression '%' MultiplicativeExpression
+                         |  MultiplicativeExpression '*' AtomicExpression 
+                         |  MultiplicativeExpression '/' AtomicExpression 
+                         |  MultiplicativeExpression '%' AtomicExpression 
                          ;
 
 AtomicExpression         : '(' ArithmeticExpression ')'

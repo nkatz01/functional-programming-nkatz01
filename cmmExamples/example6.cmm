@@ -1,0 +1,4 @@
+fish = 7
+if (fish > 7)  print 1, 2
+else 
+print 0, 7
