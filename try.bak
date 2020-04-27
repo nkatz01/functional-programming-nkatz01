@@ -1,2 +1,0 @@
-#lang racket
-(port-count-lines "cmmExamples/example5.cmm"

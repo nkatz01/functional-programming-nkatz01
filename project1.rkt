@@ -216,13 +216,7 @@ as far as I'm aware, he's used nothing of mine and wasn't in need of doing so ei
   (extractState  (calcres fileName)))
 
   
-               
-        (extractState  (calcres "cmmExamples/example1.cmm"))
- (extractState  (calcres "cmmExamples/example2.cmm"))
- (extractState  (calcres "cmmExamples/example3.cmm"))
- (extractState  (calcres "cmmExamples/example4.cmm"))
- (extractState  (calcres "cmmExamples/example5.cmm")) 
- 
+              
  
 
 
