@@ -7,12 +7,6 @@
 ;https://github.com/racket/parser-tools/blob/master/parser-tools-lib/parser-tools/examples/calc.rkt
 ;https://gist.github.com/gcr/1318240
 
-#| Disclaimer: I have looked at Sandre Sjursen's code (and where I've copied an idea from him, I shall point this out) and he also helped me understand the original git hub lexer and parser code
-by explainng to me what some of the code was doing but mainly he gave me the insight of how one could implement the rest of
-the program's statements by having the 'start' point to a 'statement' block in the same way the original example had the start point to an expression block. Though, I would like to clarify, that
-as far as I'm aware, he's used nothing of mine and wasn't in need of doing so either. Also I've posted the links above where it's obvious where I've copied my modifed parser and lexer versions from|#
-
-
 
 
 
